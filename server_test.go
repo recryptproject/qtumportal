@@ -16,25 +16,25 @@ import (
 var testRPCURL *url.URL
 
 func init() {
-	// qtumRPC, found := os.LookupEnv("QTUM_RPC")
+	// recryptRPC, found := os.LookupEnv("RECRYPT_RPC")
 	// if !found {
-	// 	fmt.Println("Please specify RPC url with QTUM_RPC environment variable")
+	// 	fmt.Println("Please specify RPC url with RECRYPT_RPC environment variable")
 	// 	os.Exit(1)
 	// }
 
-	// qtumRPCURL, err := url.Parse(qtumRPC)
-	qtumRPCURL, err := url.Parse("http://howard:yeh@localhost:13889")
+	// recryptRPCURL, err := url.Parse(recryptRPC)
+	recryptRPCURL, err := url.Parse("http://howard:yeh@localhost:18489")
 	if err != nil {
-		log.Println("Invalid QTUM_RPC", qtumRPCURL.String())
+		log.Println("Invalid RECRYPT_RPC", recryptRPCURL.String())
 	}
 
-	testRPCURL = qtumRPCURL
+	testRPCURL = recryptRPCURL
 }
 
 func testServer() *Server {
 	opts := ServerOption{
 		// Port:        9999,
-		QtumdRPCURL: testRPCURL,
+		RecryptdRPCURL: testRPCURL,
 	}
 
 	s := NewServer(opts)

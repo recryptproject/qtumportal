@@ -125,7 +125,7 @@ var rpcMethods = map[string]method{
 	"getwalletinfo": {true},
 	// importaddress "address" ( "label" rescan p2sh )
 	// importmulti "requests" "options"
-	// importprivkey "qtum" ( "label" ) ( rescan )
+	// importprivkey "recrypt" ( "label" ) ( rescan )
 	// importprunedfunds
 	// importpubkey "pubkey" ( "label" rescan )
 	// importwallet "filename"

@@ -1,23 +1,23 @@
-# QTUM Portal Authorization Design
+# RECRYPT Portal Authorization Design
 
-We cannot trust 3rd party DApps to call `qtumd`'s RPC methods directly. `qtum-portal` adds an authorization layer for users to grant permission to security sensitive RPC calls.
+We cannot trust 3rd party DApps to call `recryptd`'s RPC methods directly. `recrypt-portal` adds an authorization layer for users to grant permission to security sensitive RPC calls.
 
-Since `qtum-portal` serves the HTML5 assets of a DApp, browser's CORS policy would restrict the DApp to only send JSON-RPC requests to `qtum-portal`, the origin server. These RPC calls would then be regulated according to `qtum-portal`'s security policy.
+Since `recrypt-portal` serves the HTML5 assets of a DApp, browser's CORS policy would restrict the DApp to only send JSON-RPC requests to `recrypt-portal`, the origin server. These RPC calls would then be regulated according to `recrypt-portal`'s security policy.
 
-`qtum-portal` acts as a proxy that passes JSON-RPC calls to an instance of qtumd RPC service.
+`recrypt-portal` acts as a proxy that passes JSON-RPC calls to an instance of recryptd RPC service.
 
-+ Read-only RPC calls are passed directly to `qtumd` unmodified.
-+ RPC calls that create transactions or modify `qtumd` state would require user authorization.
++ Read-only RPC calls are passed directly to `recryptd` unmodified.
++ RPC calls that create transactions or modify `recryptd` state would require user authorization.
 + Operation related RPC calls are diabled. e.g. `dumpwallet`,`clearbanned`, `prioritisetransaction`, etc.
 
-For a list of supported RPC methods, as well as which methods that require user authorization, see: [methods.go](https://github.com/hayeah/qtum-portal/blob/master/methods.go).
+For a list of supported RPC methods, as well as which methods that require user authorization, see: [methods.go](https://github.com/hayeah/recrypt-portal/blob/master/methods.go).
 
 # RPC Call Without Authorization
 
-Let's consider the `getnewaddress` method call, which generates a new payment address. The `qtumd` RPC service, given user:password, does not require any user authorization:
+Let's consider the `getnewaddress` method call, which generates a new payment address. The `recryptd` RPC service, given user:password, does not require any user authorization:
 
 ```
-curl http://howard:yeh@localhost:13889/ -X POST -H "Content-Type: application/json" -d '
+curl http://howard:yeh@localhost:18489/ -X POST -H "Content-Type: application/json" -d '
 {
   "jsonrpc": "1.0",
   "id":"1",
@@ -35,7 +35,7 @@ This results in:
 
 # Authorization Required
 
-Assuming that `qtum-portal` is running on port 9999, we can try to make the same `getnewaddress` call:
+Assuming that `recrypt-portal` is running on port 9999, we can try to make the same `getnewaddress` call:
 
 ```
 curl http://howard:yeh@localhost:9999/ -X POST -H "Content-Type: application/json" -d '
@@ -75,9 +75,9 @@ The authorization flow goes like this:
 
 1. DApp client makes an RPC call that requires authorization.
 2. Server returns `402 Payment Required`, returning an authorization object to the client.
-3. User approves the authorization object. With an API call or with `qtum-portal` UI.
+3. User approves the authorization object. With an API call or with `recrypt-portal` UI.
 4. DApp checks (or notified) that an authorization is approved. If so, DApp makes the RPC request again, this time attaching the authorization id.
-5. Server checks the authorization id to see if the RPC call has the same method and parameters. If so, it passes the RPC call to the underlying `qtumd` RPC service.
+5. Server checks the authorization id to see if the RPC call has the same method and parameters. If so, it passes the RPC call to the underlying `recryptd` RPC service.
 	+ An authorization may only be used once.
 
 The authorization API is listening on a different port (9898). For step 3, the API call is `POST /authorizations/:id/accept`:

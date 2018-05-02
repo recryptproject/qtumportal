@@ -1,5 +1,5 @@
 
-declare const QTUMPORTAL_CONFIG: {
+declare const RECRYPTPORTAL_CONFIG: {
   AUTH_BASEURL: string,
 }
 

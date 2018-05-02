@@ -7,7 +7,7 @@ export function App() {
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
           <span className="navbar-item">
-            QTUM Portal Authorizations
+            RECRYPT Portal Authorizations
         </span>
         </div>
       </nav>

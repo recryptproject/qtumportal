@@ -25,7 +25,7 @@ export class AuthList extends React.Component<IAuthListProps, {}> {
       <div>
         {notConnected &&
           <p className="notification is-warning">
-            Disconnected from QTUM Portal
+            Disconnected from RECRYPT Portal
           </p>
         }
 

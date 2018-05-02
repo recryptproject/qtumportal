@@ -11,8 +11,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/hayeah/qtum-portal/assets/abiplay"
-	"github.com/hayeah/qtum-portal/assets/authui"
+	"github.com/hayeah/recrypt-portal/assets/abiplay"
+	"github.com/hayeah/recrypt-portal/assets/authui"
 
 	"github.com/labstack/echo/middleware"
 
@@ -40,11 +40,11 @@ type ServerOption struct {
 	DAppPort      int
 	AuthPort      int
 	StaticBaseDir string
-	QtumdRPCURL   *url.URL
+	RecryptdRPCURL   *url.URL
 	DebugMode     bool
 }
 
-type qtumPortalUIConfig struct {
+type recryptPortalUIConfig struct {
 	AuthBaseURL string `json:"AUTH_BASEURL"`
 }
 
@@ -135,7 +135,7 @@ func (s *Server) makeAuthService() *echo.Echo {
 	e.Use(newBindataMiddleware(bindataConfig{
 		getter: authui.Asset,
 		jsConstants: map[string]interface{}{
-			"QTUMPORTAL_CONFIG": qtumPortalUIConfig{
+			"RECRYPTPORTAL_CONFIG": recryptPortalUIConfig{
 				AuthBaseURL: fmt.Sprintf("http://localhost:%d", opts.AuthPort),
 			},
 		},
@@ -307,7 +307,7 @@ func (s *Server) doRPCCallAuth(c echo.Context, jsonRPCReq *jsonRPCRequest) error
 }
 
 func (s *Server) doProxyRPCCall(c echo.Context, jsonRPCReq *jsonRPCRequest) error {
-	rpcURL := s.Options.QtumdRPCURL
+	rpcURL := s.Options.RecryptdRPCURL
 
 	rpcBodyBytes, err := json.Marshal(jsonRPCReq)
 	if err != nil {
@@ -405,7 +405,7 @@ var transport = &http.Transport{
 	TLSHandshakeTimeout:   10 * time.Second,
 	ExpectContinueTimeout: 1 * time.Second,
 
-	// don't use keep alive. Breaks qtumd's long-polling
+	// don't use keep alive. Breaks recryptd's long-polling
 	DisableKeepAlives: true,
 }
 
